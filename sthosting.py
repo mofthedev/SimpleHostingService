@@ -2,7 +2,7 @@
 # @author Möf Selvi
 
 import csv
-import subprocess
+import subprocess, pathlib
 import random
 import string
 import os
@@ -21,9 +21,10 @@ def main():
         print("7. Reset system (delete databases, remove users)")
         print("8. Install PHP")
         print("9. Show databases and users")
+        print("10. Setup FTP over secure connection")
         print("0. Exit")
 
-        choice = input("Enter your choice (0-7): ")
+        choice = input("Enter your choice (0-10): ")
 
         if choice == '1':
             enable_userdir_module()
@@ -43,6 +44,8 @@ def main():
             install_php()
         elif choice == '9':
             show_db()
+        elif choice == '10':
+            setup_ftp()
         elif choice == '0' or choice == 'exit':
             print("Exiting...")
             break
@@ -97,6 +100,42 @@ def show_db():
     except Exception as elnx:
         print(f"Warning: {elnx}")
 
+
+
+def setup_ftp():
+    try:
+        subprocess.run(['sudo', 'apt', 'update'], check=True)
+        subprocess.run(['sudo', 'apt', 'install', 'vsftpd', '-y'],check=True)
+
+        # ssl_generator = 'sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ~/sthosting/vsftpd_private.pem -out ~/sthosting/vsftpd_cert.pem -subj "/C=US/ST=Turkiye/L=Turkiye/O=BTU CompEng"'
+        # subprocess.run(ssl_generator.split(" "),check=True)
+        # subprocess.run([ssl_generator],check=True)
+
+        subprocess.run(['sudo', 'openssl', 'req', '-x509', '-nodes', '-days', '365', '-newkey', 'rsa:2048', '-keyout', './vsftpd_private.pem', '-out', './vsftpd_cert.pem', '-subj', '/C=US/ST=Turkiye/L=Turkiye/O=BTUCompEng'],check=True)
+
+        print("A new SSL/TLS private key & certification pair has just been generated.")
+
+        print("Now, configure your vsftpd using 'sudo nano /etc/vsftpd.conf' (!!! use real absolute path instead of $HOME !!!):")
+        print("""
+ssl_enable=YES
+rsa_cert_file=$HOME/sthosting/vsftpd_cert.pem
+rsa_private_key_file=$HOME/sthosting/vsftpd_private.pem
+pam_service_name=vsftpd
+sudo systemctl restart vsftpd
+        """)
+
+        print("Then, configure PAM using 'sudo nano /etc/pam.d/vsftpd':")
+        print("""
+auth    required    pam_unix.so
+account required    pam_unix.so
+        """)
+
+        print("And finally, restart vsftpd using 'sudo systemctl restart vsftpd'")
+        print("You may want to check its status using 'sudo systemctl status vsftpd'")
+        print("and start it if it didn't using 'sudo systemctl start vsftpd'")
+
+    except Exception as elnx:
+        print(f"Warning: {elnx}")
 
 
 def generate_random_password(length=12):
