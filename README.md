@@ -1,6 +1,14 @@
 # StudentHosting
 A CLI script to provide students with a simple hosting for educational purposes.
 
+- Prepare a file named `students.csv` which consists of student numbers on each line. No CSV headers! Example:
+```
+0030701
+0030702
+0030703
+
+```
+
 - Run [sthosting.py](sthosting.py) with sudo
 ```shell
 sudo python3 sthosting.py
