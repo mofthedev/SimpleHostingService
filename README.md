@@ -86,7 +86,10 @@ Options:
   rsa_cert_file=$HOME/sthosting/vsftpd_cert.pem
   rsa_private_key_file=$HOME/sthosting/vsftpd_private.pem
   pam_service_name=vsftpd
-  sudo systemctl restart vsftpd
+  write_enable=YES
+  local_umask=022
+  chroot_local_user=YES
+  allow_writeable_chroot=YES
   ```
 
   - Go to `/etc/pam.d/vsftpd` and configure it:
