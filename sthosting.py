@@ -121,7 +121,10 @@ ssl_enable=YES
 rsa_cert_file=$HOME/sthosting/vsftpd_cert.pem
 rsa_private_key_file=$HOME/sthosting/vsftpd_private.pem
 pam_service_name=vsftpd
-sudo systemctl restart vsftpd
+write_enable=YES
+local_umask=022
+chroot_local_user=YES
+allow_writeable_chroot=YES
         """)
 
         print("Then, configure PAM using 'sudo nano /etc/pam.d/vsftpd':")
@@ -223,8 +226,8 @@ def run_newusers():
 
                     public_html_dir = os.path.join(home_dir, 'public_html')
                     os.makedirs(public_html_dir, exist_ok=True)
-                    os.chmod(public_html_dir, 0o755)
-                    os.chmod(home_dir, 0o755)
+                    os.chmod(public_html_dir, 0o751)
+                    os.chmod(home_dir, 0o751)
                     uid = pwd.getpwnam(username).pw_uid
                     gid = grp.getgrnam(username).gr_gid
                     os.chown(public_html_dir, uid, gid)
