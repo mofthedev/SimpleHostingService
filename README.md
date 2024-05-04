@@ -18,6 +18,7 @@ Options:
   7. Reset system (delete databases, remove users)
   8. Install PHP
   9. Show databases and users
+  10. Setup FTP over secure connection
   0. Exit
 ```
 
@@ -25,7 +26,17 @@ Options:
 
 - Make sure to:
   - Install apache, mysql/maridb, php and php extensions
+
+
+ 
+  ## For Apache
   - Enable userdir mod for apache.
+  
+  ```shell
+  sudo a2enmod userdir
+  sudo systemctl restart apache2
+  ```
+  
   - Go to `/etc/apache2/mods-available/phpx.x.conf` and comment these lines:
   
   ```
@@ -35,24 +46,50 @@ Options:
     </Directory>                                                   
     </IfModule>         
   ```
-  
-  - Go to `/etc/php/x.x/apache2/php.ini` and turn on or off `display_errors`
-  
-  ```
-  display_errors = On # or Off
-  ```
-  
-  - Run MySQL/MariaDB secure installation script:
- 
-  ```shell
-  sudo mysql_secure_installation
-  ```
 
   - Go to `/etc/apache2/mods-enabled/dir.conf` and bring `index.php` to the beginning:
+  
   ```
   <IfModule mod_dir.c>
     DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
   </IfModule>
   ```
 
+
+
+  ## For PHP
+  - Go to `/etc/php/x.x/apache2/php.ini` and turn on or off `display_errors`
+  
+  ```
+  display_errors = On # or Off
+  ```
+
+
+
+  ## For MySQL
+  - Run MySQL/MariaDB secure installation script:
+ 
+  ```shell
+  sudo mysql_secure_installation
+  ```
+
+
+
+  ## For FTP
+  - Go to `/etc/vsftpd.conf` and configure it:
+  ```
+  ssl_enable=YES
+  rsa_cert_file=$HOME/sthosting/vsftpd_cert.pem
+  rsa_private_key_file=$HOME/sthosting/vsftpd_private.pem
+  pam_service_name=vsftpd
+  sudo systemctl restart vsftpd
+  ```
+
+  - Go to `/etc/pam.d/vsftpd` and configure it:
+  ```
+  auth    required    pam_unix.so
+  account required    pam_unix.so
+  ```
+
+  
   
