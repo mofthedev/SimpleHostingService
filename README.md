@@ -38,7 +38,6 @@ Options:
   ```
   
   - Go to `/etc/apache2/mods-available/phpx.x.conf` and comment these lines:
-  
   ```
     <IfModule mod_userdir.c>                                           
     <Directory /home/*/public_html>                                
@@ -48,7 +47,6 @@ Options:
   ```
 
   - Go to `/etc/apache2/mods-enabled/dir.conf` and bring `index.php` to the beginning:
-  
   ```
   <IfModule mod_dir.c>
     DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
@@ -59,7 +57,6 @@ Options:
 
   ## For PHP
   - Go to `/etc/php/x.x/apache2/php.ini` and turn on or off `display_errors`
-  
   ```
   display_errors = On # or Off
   ```
@@ -68,7 +65,6 @@ Options:
 
   ## For MySQL
   - Run MySQL/MariaDB secure installation script:
- 
   ```shell
   sudo mysql_secure_installation
   ```
@@ -76,7 +72,7 @@ Options:
 
 
   ## For FTP
-  - Go to `/etc/vsftpd.conf` and configure it:
+  - Go to `/etc/vsftpd.conf` and configure it (!!! use real absolute path instead of $HOME or ~ !!!):
   ```
   ssl_enable=YES
   rsa_cert_file=$HOME/sthosting/vsftpd_cert.pem
