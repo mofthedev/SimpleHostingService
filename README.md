@@ -79,10 +79,16 @@ Options:
 
 
   ## For PHP
-  - Go to `/etc/php/x.x/apache2/php.ini` and turn on or off `display_errors`
+  - Go to `/etc/php/x.x/apache2/php.ini`
+  ```
+  disable_functions = exec,system,passthru
+  ```
+  
+  - You also can turn on or off `display_errors`
   ```
   display_errors = On # or Off
   ```
+  
 
 
 
