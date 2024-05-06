@@ -61,6 +61,21 @@ Options:
   </IfModule>
   ```
 
+  - Go to `/etc/apache2/mods-enabled/userdir.conf` and set PHP's open_basedir to users' dirs:
+  ```
+  <IfModule mod_userdir.c>
+          UserDir public_html
+          UserDir disabled root
+  
+          <Directory /home/*/public_html>
+                  AllowOverride FileInfo AuthConfig Limit Indexes
+                  Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+                  Require method GET POST OPTIONS
+                  php_admin_value open_basedir "."
+          </Directory>
+  </IfModule>
+  ```
+
 
 
   ## For PHP
