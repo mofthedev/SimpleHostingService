@@ -1,6 +1,6 @@
 # Simple Hosting Service with pure Apache, PHP, MariaDB, VSFTPD
 
-A CLI script to provide students with a simple hosting for educational purposes.
+A CLI script to provide students with a simple and secure hosting for educational purposes.
 
 - Prepare a file named `students.csv` which consists of student numbers on each line. No CSV headers! Example:
 ```
