@@ -57,6 +57,22 @@ def enable_userdir_module():
         subprocess.run(['a2enmod', 'userdir'], check=True)
         subprocess.run(['systemctl', 'restart', 'apache2'], check=True)
         print("userdir module enabled for Apache successfully.")
+
+        print("Now don't forget to set PHP's open_basedir to users' dirs using 'sudo nano /etc/apache2/mods-enabled/userdir.conf'")
+        print("""
+        <IfModule mod_userdir.c>
+            UserDir public_html
+            UserDir disabled root
+
+            <Directory /home/*/public_html>
+                    AllowOverride FileInfo AuthConfig Limit Indexes
+                    Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+                    Require method GET POST OPTIONS
+                    php_admin_value open_basedir "."
+            </Directory>
+        </IfModule>
+        """)
+
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         print("Failed to enable userdir module.")
@@ -81,7 +97,10 @@ def install_php():
         subprocess.run(['sudo', 'apt', 'install', 'php', 'libapache2-mod-php', 'php-mysql', 'php-zip', 'php-gd', 'php-mbstring', 'php-curl', 'php-xml', 'php-bcmath','-y'], check=True)
         subprocess.run(['sudo', 'systemctl', 'restart', 'apache2.service'], check=True)
         print("PHP installed successfully.")
-        print("Run 'sudo nano /etc/apache2/mods-enabled/php8.x.conf' and edit the conf file.")
+        print("Run 'sudo nano /etc/apache2/mods-enabled/php8.x.conf' and edit the conf file to comment last 5 lines.")
+        print("then")
+        print("Set disable_functions using 'sudo nano /etc/php/8.1/apache2/php.ini'")
+        print("disable_functions = exec,system,passthru")
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         print("Failed to install MariaDB.")
@@ -123,8 +142,8 @@ rsa_private_key_file=$HOME/sthosting/vsftpd_private.pem
 pam_service_name=vsftpd
 write_enable=YES
 local_umask=022
-#chroot_local_user=YES
-#allow_writeable_chroot=YES
+chroot_local_user=YES
+allow_writeable_chroot=YES
         """)
 
         print("Then, configure PAM using 'sudo nano /etc/pam.d/vsftpd':")
