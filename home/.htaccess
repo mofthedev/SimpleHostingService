@@ -1,0 +1,10 @@
+
+<Files "db.csv">
+    Order deny,allow
+    Deny from all
+</Files>
+
+<Files "queries.log">
+    Order deny,allow
+    Deny from all
+</Files>
