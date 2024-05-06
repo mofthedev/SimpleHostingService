@@ -30,7 +30,9 @@ Options:
   0. Exit
 ```
 
-- Test it using [index.php](index.php)
+- Test it using [./test](./test)
+
+- Let the students query their account details using [./home](./home)
 
 - Make sure to:
   - Install apache, mysql/maridb, php and php extensions
