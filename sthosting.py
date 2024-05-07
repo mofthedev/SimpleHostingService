@@ -86,6 +86,8 @@ def install_mariadb():
         print("Run 'sudo systemctl start mariadb.service'")
         print("and")
         print("'sudo mysql_secure_installation'.")
+        print("Don't forget to install phpMyAdmin (https://www.phpmyadmin.net/downloads/) into '/var/www/html/phpmyadmin'.")
+
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         print("Failed to install MariaDB.")
