@@ -1,5 +1,17 @@
 <?php
+
+/**
+ * Author: Möf Selvi
+ * Account details page for Simple Hosting Service.
+ * Licensed under MIT.
+ * 
+ * @author      Möf Selvi (@mofthedev)
+ * @copyright   Möf Selvi (Muhammed Ömer Faruk Selvi, mofselvi)
+ * @license     http://opensource.org/licenses/MIT MIT License
+ */
+
 session_start();
+
 
 $databaseFile = 'db.csv'; // CHMOD = 750 !!! It would be easily hackable otherwise.
 
@@ -77,6 +89,12 @@ $screen_buffer = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     addLog(json_encode($_POST));
+
+    if((!isset($_POST['captcha_code']) || $_POST['captcha_code']!==$_SESSION['captcha']))
+    {
+        echo '<h2>Invalid captcha code. Try again.</h2>';
+        exit;
+    }
 
     $digit1 = $_POST['digit1'];
     $digit2 = $_POST['digit2'];
@@ -256,6 +274,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         <label for="student_number">Student Number:</label>
         <input type="text" id="student_number" name="student_number" minlength="5" maxlength="20" required pattern="[0-9]{5,}">
         <br><br>
+        <label for="captcha_code">Captcha:</label>
+        <input type="text" id="captcha_code" name="captcha_code">
+        <img id='captcha_img' src="captcha.php">
+        <br><br>
         <input type="submit" value="Submit">
         <br>
         <p class='info'>By using this system, you agree that all actions you take and all data you provide can be stored and used by the system administrators.</p>
@@ -269,6 +291,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     }
     ?>
     </div>
+
+    <script>
+        document.getElementById('captcha_img').src="captcha.php?r="+Math.random();
+    </script>
 </body>
 
 </html>
