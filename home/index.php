@@ -97,16 +97,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         if ($result)
         {
             $screen_buffer .= "<div class='result'>";
+            
             $screen_buffer .= "<h2>Here are your hosting informations:</h2>";
+
+            $screen_buffer .= "<div class='heading'>Personal</div>";
+
             $screen_buffer .= "<p>ID Number: " . $result[0] . "</p>";
             $screen_buffer .= "<p>Student Number: " . $result[1] . "</p>";
-            $screen_buffer .= "<p>Linux Username: " . $result[2] . "</p>";
-            $screen_buffer .= "<p>Database User: " . $result[3] . "</p>";
-            $screen_buffer .= "<p>Database Name: " . $result[4] . "</p>";
-            $screen_buffer .= "<p>Linux Password: " . $result[5] . "</p>";
-            $screen_buffer .= "<p>Database Password: " . $result[6] . "</p>";
+
+            $screen_buffer .= "<div class='heading'>FTP</div>";
+
             $screen_buffer .= "<p>IP: 95.130.171.20</p>";
             $screen_buffer .= "<p>FTP Port: 21</p>";
+            $screen_buffer .= "<p>Linux Username: " . $result[2] . "</p>";
+            $screen_buffer .= "<p>Linux Password: " . $result[5] . "</p>";
+
+            $screen_buffer .= "<div class='heading'>MariaDB (MySQL)</div>";
+
+            $screen_buffer .= "<p>Database User: " . $result[3] . "</p>";
+            $screen_buffer .= "<p>Database Password: " . $result[6] . "</p>";
+            $screen_buffer .= "<p>Database Name: " . $result[4] . "</p>";
+
             $screen_buffer .= "</div>";
 
             // Reset
@@ -187,6 +198,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             margin-top: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: left;
         }
         .error {
             color: #ff0000;
@@ -195,6 +207,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         .info {
             color: #2a378c;
             margin-top: 20px;
+        }
+        .heading {
+            color: #2a378c;
+            padding-top: 5px;
+            font-weight: bolder;
         }
     </style>
 </head>
