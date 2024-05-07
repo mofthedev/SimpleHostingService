@@ -101,6 +101,8 @@ Options:
   sudo mysql_secure_installation
   ```
 
+  - Don't forget to install [phpMyAdmin](https://www.phpmyadmin.net/downloads/) into `/var/www/html/phpmyadmin`.
+
 
 
   ## For FTP
