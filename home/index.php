@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     addLog(json_encode($_POST));
 
-    if((!isset($_POST['captcha_code']) || $_POST['captcha_code']!==$_SESSION['captcha']))
+    if((!isset($_POST['captcha_code']) || !isset($_SESSION['captcha']) || $_POST['captcha_code']!==$_SESSION['captcha']))
     {
         echo '<h2>Invalid captcha code. Try again.</h2>';
         exit;
