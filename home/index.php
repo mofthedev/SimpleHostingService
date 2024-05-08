@@ -125,16 +125,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
             $screen_buffer .= "<div class='heading'>FTP</div>";
 
-            $screen_buffer .= "<p>IP: This server's IP</p>";
+            $screen_buffer .= "<p>IP/Host: ".$_SERVER['SERVER_NAME']."</p>";
             $screen_buffer .= "<p>FTP Port: 21</p>";
             $screen_buffer .= "<p>Linux Username: " . $result[2] . "</p>";
             $screen_buffer .= "<p>Linux Password: " . $result[5] . "</p>";
+            $screen_buffer .= "<p>Your website: <a href='http://".$_SERVER['SERVER_NAME']."/~st".$result[1]."' target='_blank'>http://".$_SERVER['SERVER_NAME']."/~st".$result[1]."</a></p>";
 
             $screen_buffer .= "<div class='heading'>MariaDB (MySQL)</div>";
 
             $screen_buffer .= "<p>Database User: " . $result[3] . "</p>";
             $screen_buffer .= "<p>Database Password: " . $result[6] . "</p>";
             $screen_buffer .= "<p>Database Name: " . $result[4] . "</p>";
+            $screen_buffer .= "<p>phpMyAdmin: <a href='http://".$_SERVER['SERVER_NAME']."/phpmyadmin' target='_blank'>http://".$_SERVER['SERVER_NAME']."/phpmyadmin</a></p>";
 
             $screen_buffer .= "</div>";
 
