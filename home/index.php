@@ -261,16 +261,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         <label for="digit1">1st Digit of ID Number:</label>
         <input type="text" id="digit1" name="digit1" maxlength="1" required pattern="[0-9]">
         <br><br>
-        <label for="digit2">3rd Digit of ID Number:</label>
+        <label for="digit2">4th Digit of ID Number:</label>
         <input type="text" id="digit2" name="digit2" maxlength="1" required pattern="[0-9]">
         <br><br>
-        <label for="digit3">6th Digit of ID Number:</label>
+        <label for="digit3">7th Digit of ID Number:</label>
         <input type="text" id="digit3" name="digit3" maxlength="1" required pattern="[0-9]">
         <br><br>
-        <label for="digit4">9th Digit of ID Number:</label>
+        <label for="digit4">10th Digit of ID Number:</label>
         <input type="text" id="digit4" name="digit4" maxlength="1" required pattern="[0-9]">
         <br><br>
-        <label for="digit5">10th Digit of ID Number:</label>
+        <label for="digit5">11th Digit of ID Number:</label>
         <input type="text" id="digit5" name="digit5" maxlength="1" required pattern="[0-9]">
         <br><br>
         <label for="student_number">Student Number:</label>
