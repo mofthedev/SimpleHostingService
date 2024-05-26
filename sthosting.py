@@ -22,6 +22,7 @@ def main():
         print("8. Install PHP")
         print("9. Show databases and users")
         print("10. Setup FTP over secure connection")
+        print("11. Generate userdir.conf for apache2")
         print("0. Exit")
 
         choice = input("Enter your choice (0-10): ")
@@ -46,6 +47,8 @@ def main():
             show_db()
         elif choice == '10':
             setup_ftp()
+        elif choice == '11':
+            generate_userdir_conf()
         elif choice == '0' or choice == 'exit':
             print("Exiting...")
             break
@@ -86,8 +89,6 @@ def install_mariadb():
         print("Run 'sudo systemctl start mariadb.service'")
         print("and")
         print("'sudo mysql_secure_installation'.")
-        print("Don't forget to install phpMyAdmin (https://www.phpmyadmin.net/downloads/) into '/var/www/html/phpmyadmin'.")
-
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         print("Failed to install MariaDB.")
@@ -99,10 +100,7 @@ def install_php():
         subprocess.run(['sudo', 'apt', 'install', 'php', 'libapache2-mod-php', 'php-mysql', 'php-zip', 'php-gd', 'php-mbstring', 'php-curl', 'php-xml', 'php-bcmath','-y'], check=True)
         subprocess.run(['sudo', 'systemctl', 'restart', 'apache2.service'], check=True)
         print("PHP installed successfully.")
-        print("Run 'sudo nano /etc/apache2/mods-enabled/php8.x.conf' and edit the conf file to comment last 5 lines.")
-        print("then")
-        print("Set disable_functions using 'sudo nano /etc/php/8.1/apache2/php.ini'")
-        print("disable_functions = exec,system,passthru")
+        print("Run 'sudo nano /etc/apache2/mods-enabled/php8.x.conf' and edit the conf file.")
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         print("Failed to install MariaDB.")
@@ -144,8 +142,8 @@ rsa_private_key_file=$HOME/sthosting/vsftpd_private.pem
 pam_service_name=vsftpd
 write_enable=YES
 local_umask=022
-chroot_local_user=YES
-allow_writeable_chroot=YES
+#chroot_local_user=YES
+#allow_writeable_chroot=YES
         """)
 
         print("Then, configure PAM using 'sudo nano /etc/pam.d/vsftpd':")
@@ -219,6 +217,66 @@ def create_users_file():
         print(f"Error: File '{input_file}' not found.")
     except Exception as e:
         print(f"An error occurred: {e}")
+
+def generate_userdir_conf():
+    input_file = "student_infos.csv"
+    output_file = "userdir.conf"
+
+    userdiropts = ""
+
+
+    try:
+        with open(input_file, 'r') as infile:
+            reader = csv.DictReader(infile)
+            for row in reader:
+                linux_username = row['Linux Username']
+                userdiropts += "\t\tUse DirectoryBasedir "+linux_username+"\n"
+
+            userdir_content = """
+            <IfModule mod_userdir.c>
+                    UserDir public_html
+                    UserDir disabled root
+
+                    <Macro DirectoryBasedir $(username)>
+                        <Directory /home/$(username)/public_html>
+                            AllowOverride FileInfo AuthConfig Limit Indexes
+                            Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+                            Require method GET POST OPTIONS
+
+                            php_admin_value open_basedir /home/$(username)/public_html
+                        </Directory>
+                    </Macro>
+
+                    <Directory /home/*/public_html>
+                        AllowOverride FileInfo AuthConfig Limit Indexes
+                        Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
+                        Require method GET POST OPTIONS
+
+                        php_admin_value open_basedir "."
+                    </Directory>
+
+"""+userdiropts+"""
+
+            </IfModule>
+
+            # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+
+            """
+
+        with open(output_file, 'w') as outfile:
+            
+            outfile.write(userdir_content)
+
+        print("userdir.conf file is generated. Move it to '/etc/apache2/mods-enabled/userdir.conf'.")
+        print("You can use 'sudo cp userdir.conf /etc/apache2/mods-enabled/userdir.conf' after checking the generated file.")
+
+    except FileNotFoundError:
+        print(f"Error: File '{input_file}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+    
 
 # def run_newusers():
 #     users_file = "users.txt"
