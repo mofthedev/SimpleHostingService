@@ -269,6 +269,7 @@ def generate_userdir_conf():
 
         print("userdir.conf file is generated. Move it to '/etc/apache2/mods-enabled/userdir.conf'.")
         print("You can use 'sudo cp userdir.conf /etc/apache2/mods-enabled/userdir.conf' after checking the generated file.")
+        print("Do not forget to restart apache by using 'sudo systemctl restart apache2'.")
 
     except FileNotFoundError:
         print(f"Error: File '{input_file}' not found.")
