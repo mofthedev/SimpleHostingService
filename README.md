@@ -15,7 +15,7 @@ A CLI script to provide students with a simple and secure hosting for educationa
 sudo python3 sthosting.py
 ```
 
-- Use the options #3, #4, #5, #6 respectively.
+- Use the options #3, #4, #5, #6 and #11 respectively.
 ```
 Options:
   1. Enable userdir module for Apache
@@ -28,6 +28,7 @@ Options:
   8. Install PHP
   9. Show databases and users
   10. Setup FTP over secure connection
+  11. Generate userdir.conf for apache2
   0. Exit
 ```
 
