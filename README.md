@@ -74,7 +74,7 @@ Options:
                   AllowOverride FileInfo AuthConfig Limit Indexes
                   Options MultiViews Indexes SymLinksIfOwnerMatch IncludesNoExec
                   Require method GET POST OPTIONS
-                  php_admin_value open_basedir "."
+                  php_admin_value open_basedir /home/$1/public_html
           </Directory>
   </IfModule>
   ```
