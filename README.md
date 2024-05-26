@@ -45,6 +45,8 @@ Options:
   
   ```shell
   sudo a2enmod userdir
+  sudo a2enmod env
+  sudo a2enmod rewrite
   sudo systemctl restart apache2
   ```
   
