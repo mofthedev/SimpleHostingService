@@ -25,7 +25,7 @@ def main():
         print("11. Generate userdir.conf for apache2")
         print("0. Exit")
 
-        choice = input("Enter your choice (0-10): ")
+        choice = input("Enter your choice (0-11): ")
 
         if choice == '1':
             enable_userdir_module()
@@ -89,6 +89,8 @@ def install_mariadb():
         print("Run 'sudo systemctl start mariadb.service'")
         print("and")
         print("'sudo mysql_secure_installation'.")
+        print("Don't forget to install phpMyAdmin (https://www.phpmyadmin.net/downloads/) into '/var/www/html/phpmyadmin'.")
+
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         print("Failed to install MariaDB.")
@@ -100,7 +102,10 @@ def install_php():
         subprocess.run(['sudo', 'apt', 'install', 'php', 'libapache2-mod-php', 'php-mysql', 'php-zip', 'php-gd', 'php-mbstring', 'php-curl', 'php-xml', 'php-bcmath','-y'], check=True)
         subprocess.run(['sudo', 'systemctl', 'restart', 'apache2.service'], check=True)
         print("PHP installed successfully.")
-        print("Run 'sudo nano /etc/apache2/mods-enabled/php8.x.conf' and edit the conf file.")
+        print("Run 'sudo nano /etc/apache2/mods-enabled/php8.x.conf' and edit the conf file to comment last 5 lines.")
+        print("then")
+        print("Set disable_functions using 'sudo nano /etc/php/8.1/apache2/php.ini'")
+        print("disable_functions = exec,system,passthru")
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
         print("Failed to install MariaDB.")
@@ -167,7 +172,7 @@ def generate_random_password(length=12):
 def process_student_info():
     input_file = "students.csv"
     output_file = "student_infos.csv"
-    headers = ["Student Number", "Linux Username", "Database User", "Database Name", "Linux Password", "Database Password"]
+    headers = ["Secret Code","Student Number", "Linux Username", "Database User", "Database Name", "Linux Password", "Database Password"]
 
     try:
         with open(input_file, 'r') as infile, open(output_file, 'w', newline='') as outfile:
@@ -177,6 +182,7 @@ def process_student_info():
 
             for row in reader:
                 if row:
+                    secret_code = generate_random_password()
                     student_number = row[0]
                     linux_username = "st" + student_number
                     db_user = "dbusr" + student_number
@@ -184,7 +190,7 @@ def process_student_info():
                     linux_password = generate_random_password()
                     db_password = generate_random_password()
 
-                    writer.writerow([student_number, linux_username, db_user, db_name, linux_password, db_password])
+                    writer.writerow([secret_code,student_number, linux_username, db_user, db_name, linux_password, db_password])
 
         print(f"Student information generated and saved to '{output_file}' successfully.")
 
@@ -275,9 +281,6 @@ def generate_userdir_conf():
         print(f"Error: File '{input_file}' not found.")
     except Exception as e:
         print(f"An error occurred: {e}")
-
-
-    
 
 # def run_newusers():
 #     users_file = "users.txt"
