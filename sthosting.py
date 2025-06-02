@@ -147,8 +147,8 @@ rsa_private_key_file=$HOME/sthosting/vsftpd_private.pem
 pam_service_name=vsftpd
 write_enable=YES
 local_umask=022
-#chroot_local_user=YES
-#allow_writeable_chroot=YES
+chroot_local_user=YES
+allow_writeable_chroot=YES
         """)
 
         print("Then, configure PAM using 'sudo nano /etc/pam.d/vsftpd':")
