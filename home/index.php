@@ -96,12 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         exit;
     }
 
-    $digit1 = $_POST['digit1'];
-    $digit2 = $_POST['digit2'];
-    $digit3 = $_POST['digit3'];
-    $digit4 = $_POST['digit4'];
-    $digit5 = $_POST['digit5'];
-    $idDigits = $digit1 . '**' . $digit2 . '**' . $digit3 . '**' . $digit4 . $digit5;
+    $secretcode = $_POST['secretcode'];
+    $idDigits = $secretcode;
     $studentNo = $_POST['student_number'];
 
     if (checkAttempts())
@@ -120,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
             $screen_buffer .= "<div class='heading'>Personal</div>";
 
-            $screen_buffer .= "<p>ID Number: " . $result[0] . "</p>";
+            $screen_buffer .= "<p>Secret Code: " . $result[0] . "</p>";
             $screen_buffer .= "<p>Student Number: " . $result[1] . "</p>";
 
             $screen_buffer .= "<div class='heading'>FTP</div>";
@@ -191,7 +187,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             display: block;
             margin-bottom: 8px;
         }
-        .container form input[type="text"] {
+        .container form input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 16px;
@@ -228,6 +224,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             color: #2a378c;
             margin-top: 20px;
         }
+        .small {
+            font-size: small;
+            font-style: italic;
+            text-align: end;
+        }
+        a {
+            color:rgb(37, 104, 136);
+            text-decoration: none;
+        }
         .heading {
             color: #2a378c;
             padding-top: 5px;
@@ -258,24 +263,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     ?>
 
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="digit1">1st Digit of ID Number:</label>
-        <input type="text" id="digit1" name="digit1" maxlength="1" required pattern="[0-9]">
-        <br><br>
-        <label for="digit2">4th Digit of ID Number:</label>
-        <input type="text" id="digit2" name="digit2" maxlength="1" required pattern="[0-9]">
-        <br><br>
-        <label for="digit3">7th Digit of ID Number:</label>
-        <input type="text" id="digit3" name="digit3" maxlength="1" required pattern="[0-9]">
-        <br><br>
-        <label for="digit4">10th Digit of ID Number:</label>
-        <input type="text" id="digit4" name="digit4" maxlength="1" required pattern="[0-9]">
-        <br><br>
-        <label for="digit5">11th Digit of ID Number:</label>
-        <input type="text" id="digit5" name="digit5" maxlength="1" required pattern="[0-9]">
-        <br><br>
-        <label for="student_number">Student Number:</label>
+
+        <label for="student_number">Student number:</label>
         <input type="text" id="student_number" name="student_number" minlength="5" maxlength="20" required pattern="[0-9]{5,}">
         <br><br>
+        <label for="secretcode">Your secret code:</label>
+        <input type="password" id="secretcode" name="secretcode" minlength="1">
+        <br><br>
+
         <label for="captcha_code">Captcha:</label>
         <input type="text" id="captcha_code" name="captcha_code">
         <img id='captcha_img' src="captcha.php">
@@ -283,6 +278,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         <input type="submit" value="Submit">
         <br>
         <p class='info'>By using this system, you agree that all actions you take and all data you provide can be stored and used by the system administrators.</p>
+        <br>
+        <p class='info small'>Contact: <a href="mailto:muhammed.selvi@btu.edu.tr">muhammed.selvi@btu.edu.tr</a></p>
     </form>
 
     <?php
